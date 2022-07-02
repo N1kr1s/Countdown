@@ -1,6 +1,5 @@
 class Countdown {
   constructor() {
-    this.localStor;
     this.inputContainer = document.getElementById('input-container');
     this.countdownForm = document.getElementById('countdownFrom');
     this.dateEl = document.getElementById('date-picker');
@@ -16,12 +15,13 @@ class Countdown {
     this.completeElInfo = document.getElementById('complete-info');
     this.completeBtn = document.getElementById('complete-button');
     this.interval;
-
     //*Time conversion variables
     this.second = 1000;
     this.minute = this.second * 60;
     this.hour = this.minute * 60;
     this.day = this.hour * 24;
+
+    this.getLocalStor();
 
     this.countdownForm.addEventListener(
       'submit',
@@ -45,6 +45,8 @@ class Countdown {
     if (!this.countdownDate) return;
     this.countdownValue = new Date(this.countdownDate).getTime();
 
+    this.saveLocalStor(this.countdownTitle, this.countdownDate);
+    this.updateDOM();
     this.interval = setInterval(this.updateDOM.bind(this), 1000);
   }
   //*Populate Countdown/Convert Time-->from milliseconds to normal/Display Completed Screen
@@ -82,14 +84,29 @@ class Countdown {
     // * Hide Countdown
     this.countdownEl.style.display = 'none';
     clearInterval(this.interval);
+    localStorage.clear();
   }
 
   newCount() {
     this.completeEl.style.display = 'none';
     this.inputContainer.style.display = 'flex';
+    localStorage.clear();
   }
 
-  saveLocalStor() {}
+  saveLocalStor(title, date) {
+    localStorage.setItem('title', title);
+    localStorage.setItem('date', date);
+  }
+
+  getLocalStor() {
+    if (localStorage.getItem('date')) {
+      this.countdownTitle = localStorage.getItem('title');
+      this.countdownDate = localStorage.getItem('date');
+      this.countdownValue = new Date(this.countdownDate).getTime();
+      this.updateDOM();
+      this.interval = setInterval(this.updateDOM.bind(this), 1000);
+    }
+  }
 }
 
 const countdown = new Countdown();

@@ -167,6 +167,14 @@ li span {
   animation-iteration-count: infinite;
 }
 
+h1 {
+  color: rgb(237, 135, 71);
+}
+
+h2 {
+  font-size: xx-large;
+}
+
 @keyframes finish {
   0% {
     color: aqua;
